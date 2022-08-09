@@ -12,7 +12,7 @@ class PlayScene(
         get() = gravityMomentum > 4
 
     override suspend fun SContainer.sceneMain() {
-        val collidables = terrain.drawBase(this)
+        val collidables = terrain.drawLand(this)
 
         playerBird.addTo(this).xy(centerX - playerBird.width / 2, /*bottomRowGrass.toDouble() - blockSize*/0.0)
 
