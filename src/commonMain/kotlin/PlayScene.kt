@@ -17,6 +17,9 @@ class PlayScene(
 
         addUpdater {
             when {
+                playerBird.isJumping -> playerBird.continueJumpMomentum()
+                input.keys.pressing(Key.LEFT) && input.keys.pressing(Key.SPACE) && !isFalling -> playerBird.jumpLeft()
+                input.keys.pressing(Key.RIGHT) && input.keys.pressing(Key.SPACE) && !isFalling -> playerBird.jumpRight()
                 input.keys.pressing(Key.LEFT) && !isFalling -> playerBird.runLeft()
                 input.keys.pressing(Key.RIGHT) && !isFalling -> playerBird.runRight()
                 input.keys.justPressed(Key.SPACE) -> playerBird.flap()
@@ -31,6 +34,7 @@ class PlayScene(
         playerBird.onCollision({ collidables.contains(it) }) {
             if (playerBird.verticalMomentum > 0) {
                 playerBird.alignBottomToTopOf(it)
+                playerBird.land()
             } else if (playerBird.verticalMomentum < 0) {
                 playerBird.alignTopToBottomOf(it)
                 playerBird.y++
