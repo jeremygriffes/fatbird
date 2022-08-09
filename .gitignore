@@ -1,0 +1,9 @@
+/build
+/.idea/
+/.git
+/.github
+/.gradle
+*.iml
+*.hprof
+*.log
+.DS_Store
