@@ -6,10 +6,9 @@ class PlayScene(
     private val playerBird: PlayerBird,
     private val terrain: Terrain
 ) : Scene() {
-    private var gravityMomentum = 1
     private val maxGravity = 10
     private val isFalling: Boolean
-        get() = gravityMomentum > 4
+        get() = playerBird.verticalMomentum > 4
 
     override suspend fun SContainer.sceneMain() {
         val collidables = terrain.drawLand(this)
@@ -20,17 +19,23 @@ class PlayScene(
             when {
                 input.keys.pressing(Key.LEFT) && !isFalling -> playerBird.runLeft()
                 input.keys.pressing(Key.RIGHT) && !isFalling -> playerBird.runRight()
+                input.keys.justPressed(Key.SPACE) -> playerBird.flap()
                 else -> playerBird.idle()
             }
 
-            playerBird.y += gravityMomentum
-            gravityMomentum += 1
-            gravityMomentum = minOf(gravityMomentum, maxGravity)
+            playerBird.y += playerBird.verticalMomentum
+            playerBird.verticalMomentum += 1
+            playerBird.verticalMomentum = minOf(playerBird.verticalMomentum, maxGravity)
         }
 
         playerBird.onCollision({ collidables.contains(it) }) {
-            playerBird.alignBottomToTopOf(it)
-            gravityMomentum = 1
+            if (playerBird.verticalMomentum > 0) {
+                playerBird.alignBottomToTopOf(it)
+            } else if (playerBird.verticalMomentum < 0) {
+                playerBird.alignTopToBottomOf(it)
+                playerBird.y++
+            }
+            playerBird.verticalMomentum = 0
         }
     }
 }

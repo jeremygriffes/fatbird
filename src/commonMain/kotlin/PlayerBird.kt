@@ -11,6 +11,7 @@ enum class Action {
 }
 
 const val runSpeed = 2.0
+const val flapSpeed = 10
 
 class PlayerBird(
     private val idleAnimation: SpriteAnimation,
@@ -18,6 +19,7 @@ class PlayerBird(
     private val runLeftAnimation: SpriteAnimation
 ) : Sprite() {
     private var action: Action = Action.Idle
+    var verticalMomentum = 0
 
     fun idle() {
         playAnimationLooped(idleAnimation, spriteDisplayTime = 8.fps())
@@ -34,6 +36,11 @@ class PlayerBird(
         playAnimationLooped(runLeftAnimation, spriteDisplayTime = 20.fps())
         x -= runSpeed
         action = Action.RunLeft
+    }
+
+    fun flap() {
+        playAnimationLooped(idleAnimation, spriteDisplayTime = 8.fps())
+        verticalMomentum -= flapSpeed
     }
 
     companion object {
