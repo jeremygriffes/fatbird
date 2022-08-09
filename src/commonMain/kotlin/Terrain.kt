@@ -1,4 +1,5 @@
 import com.soywiz.korge.view.SContainer
+import com.soywiz.korge.view.View
 import com.soywiz.korge.view.image
 import com.soywiz.korge.view.xy
 import com.soywiz.korim.bitmap.Bitmap
@@ -14,10 +15,16 @@ class Terrain(private val xBlocks: Int, private val yBlocks: Int) {
         grassBitmap = resourcesVfs["grass.png"].readBitmap()
     }
 
-    fun drawBase(container: SContainer) = with(container) {
+    fun drawBase(container: SContainer): List<View> = with(container) {
+        val collidables = mutableListOf<View>()
+
         for (x in 0 until xBlocks) {
-            image(earthBitmap).xy(x * blockSize, bottomRowEarth)
+            collidables.add(
+                image(earthBitmap).xy(x * blockSize, bottomRowEarth)
+            )
             image(grassBitmap).xy(x * blockSize, bottomRowGrass)
         }
+
+        collidables.toList()
     }
 }
