@@ -1,7 +1,4 @@
-import com.soywiz.klock.TimeSpan
 import com.soywiz.korge.view.SpriteAnimation
-import com.soywiz.korim.format.readBitmap
-import com.soywiz.korio.file.std.resourcesVfs
 
 const val runSpeed = 2.0
 const val flapSpeed = 9
@@ -88,20 +85,5 @@ class PlayerBird(
             loadAnimation("bird_run_right.png", 0, 1),
             loadAnimation("bird_run_left.png", 6, 7),
         )
-
-        private suspend fun loadAnimation(fileName: String, fromFrame: Int, toFrame: Int) = SpriteAnimation(
-            resourcesVfs[fileName].readBitmap(),
-            64,
-            64,
-            0,
-            fromFrame * 64,
-            toFrame,
-            1,
-            0,
-            0,
-            toFrame - fromFrame
-        )
     }
-
-    private fun Int.fps() = TimeSpan(1000.0 / this.toDouble())
 }
