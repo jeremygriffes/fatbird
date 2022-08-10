@@ -7,12 +7,13 @@ const val jumpSpeed = 5.0
 const val jumpResistance = 0.1
 
 class PlayerBird(
+    scene: FatBirdScene,
     private val idleAnimation: SpriteAnimation,
     private val runRightAnimation: SpriteAnimation,
     private val runLeftAnimation: SpriteAnimation,
     private val jumpRightAnimation: SpriteAnimation,
     private val jumpLeftAnimation: SpriteAnimation
-) : Entity() {
+) : Entity(scene) {
     var isJumping = false
     private var canJump = false
 
@@ -78,7 +79,8 @@ class PlayerBird(
     }
 
     companion object {
-        suspend fun create() = PlayerBird(
+        suspend fun create(scene: FatBirdScene) = PlayerBird(
+            scene,
             loadAnimation("bird_idle.png", 0, 3),
             loadAnimation("bird_run_right.png", 0, 7),
             loadAnimation("bird_run_left.png", 0, 7),

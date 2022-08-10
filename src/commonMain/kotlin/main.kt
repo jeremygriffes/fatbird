@@ -6,12 +6,9 @@ const val blockSize = 32
 const val blocksX = 30
 const val blocksY = 20
 const val bottomRowEarth = (blocksY - 1) * blockSize
-const val bottomRowGrass = bottomRowEarth - blockSize
 const val centerX = blocksX * blockSize / 2
 
 private val terrain = Terrain(blocksX, blocksY)
-
-private lateinit var playerBird: PlayerBird
 
 suspend fun main() = Korge(
     width = blocksX * blockSize,
@@ -24,7 +21,5 @@ suspend fun main() = Korge(
 
     terrain.loadBitmaps()
 
-    playerBird = PlayerBird.create()
-
-    sceneContainer.changeTo({ PlayScene(playerBird, terrain) })
+    sceneContainer.changeTo({ PlayScene(terrain) })
 }
