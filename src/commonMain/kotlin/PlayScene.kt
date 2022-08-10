@@ -18,8 +18,8 @@ class PlayScene(
         addUpdater {
             when {
                 playerBird.isJumping -> playerBird.continueJumpMomentum()
-                input.keys.pressing(Key.LEFT) && input.keys.pressing(Key.SPACE) && !isFalling -> playerBird.jumpLeft()
-                input.keys.pressing(Key.RIGHT) && input.keys.pressing(Key.SPACE) && !isFalling -> playerBird.jumpRight()
+                input.keys.pressing(Key.LEFT) && input.keys.justPressed(Key.SPACE) && !isFalling -> playerBird.jumpLeft()
+                input.keys.pressing(Key.RIGHT) && input.keys.justPressed(Key.SPACE) && !isFalling -> playerBird.jumpRight()
                 input.keys.pressing(Key.LEFT) && !isFalling -> playerBird.runLeft()
                 input.keys.pressing(Key.RIGHT) && !isFalling -> playerBird.runRight()
                 input.keys.justPressed(Key.SPACE) -> playerBird.flap()

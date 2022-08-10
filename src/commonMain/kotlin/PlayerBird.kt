@@ -96,7 +96,7 @@ class PlayerBird(
             loadAnimation("bird_run_right.png", 0, 7),
             loadAnimation("bird_run_left.png", 0, 7),
             loadAnimation("bird_run_right.png", 0, 1),
-            loadAnimation("bird_run_left.png", 0, 1),
+            loadAnimation("bird_run_left.png", 6, 7),
         )
 
         private suspend fun loadAnimation(fileName: String, fromFrame: Int, toFrame: Int) = SpriteAnimation(
@@ -104,7 +104,7 @@ class PlayerBird(
             64,
             64,
             0,
-            0,
+            fromFrame * 64,
             toFrame,
             1,
             0,
