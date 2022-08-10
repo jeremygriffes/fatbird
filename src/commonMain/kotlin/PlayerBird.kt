@@ -1,18 +1,11 @@
 import com.soywiz.klock.TimeSpan
-import com.soywiz.korge.view.Sprite
 import com.soywiz.korge.view.SpriteAnimation
 import com.soywiz.korim.format.readBitmap
 import com.soywiz.korio.file.std.resourcesVfs
 
-enum class Action {
-    Idle,
-    RunRight,
-    RunLeft,
-}
-
 const val runSpeed = 2.0
 const val flapSpeed = 9
-const val maxUpwardMomentum = -14
+const val maxUpwardMomentum = -14.0
 const val jumpSpeed = 5.0
 const val jumpResistance = 0.1
 
@@ -22,10 +15,8 @@ class PlayerBird(
     private val runLeftAnimation: SpriteAnimation,
     private val jumpRightAnimation: SpriteAnimation,
     private val jumpLeftAnimation: SpriteAnimation
-) : Sprite() {
-    var verticalMomentum = 0
+) : Entity() {
     var isJumping = false
-    private var xMomentum = 0.0
     private var canJump = false
 
     fun idle() {
@@ -45,8 +36,8 @@ class PlayerBird(
     fun flap() {
         canJump = false
         playAnimationLooped(idleAnimation, spriteDisplayTime = 8.fps())
-        verticalMomentum -= flapSpeed
-        verticalMomentum = maxOf(verticalMomentum, maxUpwardMomentum)
+        momentumY -= flapSpeed
+        momentumY = maxOf(momentumY, maxUpwardMomentum)
     }
 
     fun jumpRight() {
@@ -54,8 +45,8 @@ class PlayerBird(
             canJump = false
             isJumping = true
             playAnimationLooped(jumpRightAnimation, spriteDisplayTime = 20.fps())
-            xMomentum += jumpSpeed
-            verticalMomentum -= flapSpeed
+            momentumX += jumpSpeed
+            momentumY -= flapSpeed
         }
     }
 
@@ -64,29 +55,28 @@ class PlayerBird(
             canJump = false
             isJumping = true
             playAnimationLooped(jumpLeftAnimation, spriteDisplayTime = 20.fps())
-            xMomentum -= jumpSpeed
-            verticalMomentum -= flapSpeed
+            momentumX -= jumpSpeed
+            momentumY -= flapSpeed
         }
     }
 
     fun continueJumpMomentum() {
-        x += xMomentum
+        x += momentumX
 
-        if (xMomentum > 0) {
-            xMomentum -= jumpResistance
-            xMomentum = maxOf(0.0, xMomentum)
+        if (momentumX > 0) {
+            momentumX -= jumpResistance
+            momentumX = maxOf(0.0, momentumX)
         }
 
-        if (xMomentum < 0) {
-            xMomentum += jumpResistance
-            xMomentum = minOf(0.0, xMomentum)
+        if (momentumX < 0) {
+            momentumX += jumpResistance
+            momentumX = minOf(0.0, momentumX)
         }
     }
 
-    fun land() {
-        verticalMomentum = 0
+    override fun land() {
+        super.land()
         isJumping = false
-        xMomentum = 0.0
         canJump = true
     }
 
