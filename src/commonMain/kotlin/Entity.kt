@@ -14,12 +14,14 @@ open class Entity(scene: FatBirdScene) : Sprite() {
     init {
         onCollision({ scene.collidables.contains(it) }) { earth ->
             if (collidesWithSolids) {
+                // TODO Need a more sophisticated collision resolution. This doesn't account for collisions that occur
+                //  on the X axis, resulting in odd behavior when the bird bashes into the side of a block.
                 if (momentumY > 0) {
                     alignBottomToTopOf(earth)
                     land()
                 } else if (momentumY < 0) {
                     alignTopToBottomOf(earth)
-                    y++
+                    y++ // prevents continual collisions
                 }
                 momentumY = 0.0
             }
@@ -27,9 +29,9 @@ open class Entity(scene: FatBirdScene) : Sprite() {
     }
 
     open fun land() {
+        momentumX = 0.0
         momentumY = 0.0
         isOnGround = true
-        momentumX = 0.0
     }
 
     companion object {
@@ -48,6 +50,5 @@ open class Entity(scene: FatBirdScene) : Sprite() {
             )
     }
 }
-
 
 fun Int.fps() = TimeSpan(1000.0 / this.toDouble())
